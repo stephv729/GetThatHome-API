@@ -5,4 +5,4 @@ Change: background color to components/LoginForm
 Remove: ...to [PATH]
 Fix: ...to [PATH]
 Resolve: ...to [PATH]
-Add feat (nombre del feature):
+Add feat (nombre del feature)

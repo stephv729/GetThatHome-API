@@ -10,17 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
   create_table "addresses", force: :cascade do |t|
-    t.string "name"
+    t.string "name", null: false
     t.text "references"
     t.decimal "latitude", null: false
     t.decimal "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", unique: true
   end
 
   create_table "owns", force: :cascade do |t|

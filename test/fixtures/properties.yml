@@ -1,0 +1,23 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  operation_type: MyString
+  address: MyString
+  property_typ: one
+  bedrooms: 1
+  bathrooms: 1
+  area: 1
+  description: MyText
+  photo_urls: MyText
+  active: false
+
+two:
+  operation_type: MyString
+  address: MyString
+  property_typ: two
+  bedrooms: 1
+  bathrooms: 1
+  area: 1
+  description: MyText
+  photo_urls: MyText
+  active: false

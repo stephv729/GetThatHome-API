@@ -34,7 +34,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
   end
 
   create_table "properties", force: :cascade do |t|
-    t.string "operation_type"
     t.bigint "address_id", null: false
     t.bigint "property_type_id", null: false
     t.integer "bedrooms"
@@ -73,21 +72,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "property_users", force: :cascade do |t|
+  create_table "roles", force: :cascade do |t|
+    t.string "name"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "saved_properties", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "property_id", null: false
     t.boolean "favorite"
     t.boolean "contacted"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["property_id"], name: "index_property_users_on_property_id"
-    t.index ["user_id"], name: "index_property_users_on_user_id"
-  end
-
-  create_table "roles", force: :cascade do |t|
-    t.string "name"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
+    t.index ["property_id"], name: "index_saved_properties_on_property_id"
+    t.index ["user_id"], name: "index_saved_properties_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -106,7 +105,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
   add_foreign_key "properties", "property_types"
   add_foreign_key "property_for_rents", "properties"
   add_foreign_key "property_for_sales", "properties"
-  add_foreign_key "property_users", "properties"
-  add_foreign_key "property_users", "users"
+  add_foreign_key "saved_properties", "properties"
+  add_foreign_key "saved_properties", "users"
   add_foreign_key "users", "roles"
 end

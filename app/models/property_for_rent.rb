@@ -4,7 +4,7 @@ class PropertyForRent < ApplicationRecord
 
   # Validations
 
-  validates :monthly_rent, presence: true, uniqueness: false
-  validates :maintenance, presence: true, uniqueness: false
-  validates :pets_allowed, presence: true, uniqueness: false
+  validates :monthly_rent, :maintenance, numericality: { greater_than: 0 }, presence: true, uniqueness: false
+  validates :pets_allowed, inclusion: [true, false]
+
 end

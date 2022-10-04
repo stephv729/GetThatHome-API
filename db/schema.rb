@@ -37,10 +37,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
   create_table "properties", force: :cascade do |t|
     t.bigint "address_id", null: false
     t.bigint "property_type_id", null: false
-    t.integer "bedrooms"
-    t.integer "bathrooms"
+    t.integer "bedrooms", default: 0
+    t.integer "bathrooms", default: 0
     t.integer "area"
-    t.text "description"
+    t.text "description", null: false
     t.text "photo_urls", default: [], array: true
     t.boolean "active", default: true
     t.datetime "created_at", null: false
@@ -61,7 +61,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
 
   create_table "property_for_sales", force: :cascade do |t|
     t.bigint "property_id", null: false
-    t.integer "price"
+    t.integer "price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_property_for_sales_on_property_id"
@@ -82,8 +82,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
   create_table "saved_properties", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "property_id", null: false
-    t.boolean "favorite"
-    t.boolean "contacted"
+    t.boolean "favorite", default: false
+    t.boolean "contacted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_saved_properties_on_property_id"
@@ -92,9 +92,9 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "email", null: false
+    t.string "email"
     t.string "phone"
-    t.string "password", null: false
+    t.string "password"
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

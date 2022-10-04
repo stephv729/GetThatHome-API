@@ -4,7 +4,7 @@ class Property < ApplicationRecord
   has_many :saved_properties, dependent: :destroy
 
   # validations
-  validates :active, :description, :photo_urls, presence :true
-  validates :bedrooms, :bathrooms, :area, numericality: { greater_than: 0}
+  validates :area, :active, :description, presence: true
+  validates :bedrooms, :bathrooms, :area, numericality: { greater_than_or_equal_to: 0}
 
 end

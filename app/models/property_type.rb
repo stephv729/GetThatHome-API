@@ -1,7 +1,8 @@
 class PropertyType < ApplicationRecord
-  has_many :properties
+  has_many :properties, dependent: :destroy
 
-    # Validations
+  # Validations
 
-    validates :name, presence: true, uniqueness: false
+  validates :name, presence: true, uniqueness: false
+
 end

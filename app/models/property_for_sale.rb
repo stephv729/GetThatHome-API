@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PropertyForSale < ApplicationRecord
   belongs_to :property
   has_one :own, as: :ownable, dependent: :destroy

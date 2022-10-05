@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class Property < ApplicationRecord
   belongs_to :property_type
   belongs_to :address
@@ -5,6 +7,5 @@ class Property < ApplicationRecord
 
   # validations
   validates :area, :active, :description, presence: true
-  validates :bedrooms, :bathrooms, :area, numericality: { greater_than_or_equal_to: 0}
-
+  validates :bedrooms, :bathrooms, :area, numericality: { greater_than_or_equal_to: 0 }
 end

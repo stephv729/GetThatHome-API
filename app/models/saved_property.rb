@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SavedProperty < ApplicationRecord
   belongs_to :user
   belongs_to :property
@@ -7,7 +9,6 @@ class SavedProperty < ApplicationRecord
   private
 
   def clean
-    SavedProperty.delete(self) unless self.favorite|| self.contacted
+    SavedProperty.delete(self) unless favorite || contacted
   end
-
 end

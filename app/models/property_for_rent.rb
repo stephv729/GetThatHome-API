@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class PropertyForRent < ApplicationRecord
   belongs_to :property
   has_one :own, as: :ownable, dependent: :destroy
@@ -6,5 +8,4 @@ class PropertyForRent < ApplicationRecord
 
   validates :monthly_rent, :maintenance, numericality: { greater_than: 0 }, presence: true, uniqueness: false
   validates :pets_allowed, inclusion: [true, false]
-
 end

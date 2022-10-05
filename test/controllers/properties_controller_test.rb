@@ -2,7 +2,7 @@
 
 require 'test_helper'
 
-class PropertyForRentTest < ActiveSupport::TestCase
+class PropertiesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

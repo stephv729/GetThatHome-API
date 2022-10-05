@@ -2,7 +2,7 @@
 
 class PropertiesController < ApplicationController
   def index
-    @properties = Property.all #array
+    @properties = Property.all # array
     render json: @properties
   end
 end

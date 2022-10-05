@@ -5,5 +5,4 @@ class Address < ApplicationRecord
 
   # validations
   validates :name, :latitude, :longitude, presence: true
-  validates :latitude, uniqueness: { scope: :longitude }
 end

@@ -70,12 +70,14 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_property_types_on_name", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "saved_properties", force: :cascade do |t|
@@ -97,6 +99,8 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_162822) do
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone"], name: "index_users_on_phone", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 

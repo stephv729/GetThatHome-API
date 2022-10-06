@@ -2,6 +2,7 @@
 
 class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show update destroy]
+  before_action :authenticate_user!, only: %i[update destroy]
   def index
     @properties = Property.all # array
     render json: @properties

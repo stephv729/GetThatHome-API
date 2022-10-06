@@ -5,6 +5,7 @@ Rails.application.routes.draw do
     sessions: "sessions"
   }
   # devise_for :users
-  resources :properties, only: %i[index show]
+  resources :properties, only: %i[index show update]
+  resources :property_types, only: %i[index]
   # resources :sessions, only: %i[create destroy]
 end

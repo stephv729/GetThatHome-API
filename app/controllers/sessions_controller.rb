@@ -27,7 +27,6 @@ class SessionsController < DeviseTokenAuth::SessionsController
       "access-token": @token.token,
       "token-type": "Bearer",
       client: @token.client,
-      expiry: @token.expiry,
       uid: @resource.uid
     }
     render json: @resource.as_json(only: %i[email id]).merge!({ token: })

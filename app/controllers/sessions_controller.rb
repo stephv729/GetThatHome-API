@@ -21,13 +21,15 @@
 #   def destroy; end
 # end
 class SessionsController < DeviseTokenAuth::SessionsController
-  # p @resource.authorization
   def render_create_success
     # p @resource.authorization
-    pp @token["client"]
-    render json: {
-      data: resource_data(resource_json: @resource.token_validation_response).merge!({token: "token"})
+    token = {
+      "access-token": @token.token,
+      "token-type": "Bearer",
+      client: @token.client,
+      expiry: @token.expiry,
+      uid: @resource.uid
     }
+    render json: @resource.as_json(only: %i[email id]).merge!({ token: })
   end
-
 end

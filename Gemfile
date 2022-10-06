@@ -38,7 +38,8 @@ gem "bootsnap", require: false
 # gem "image_processing", "~> 1.2"
 
 # Use Rack CORS for handling Cross-Origin Resource Sharing (CORS), making cross-origin AJAX possible
-gem "rack-cors"
+# gem "rack-cors"
+gem 'rack-cors', :require => 'rack/cors'
 
 gem "active_model_serializers"
 group :development, :test do

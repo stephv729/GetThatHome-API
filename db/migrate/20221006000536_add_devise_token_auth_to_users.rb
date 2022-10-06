@@ -1,14 +1,13 @@
-class DeviseTokenAuthCreateUsers < ActiveRecord::Migration[7.0]
-  def change
-    change_table :users do |t|
-      ## Required
-      t.string :provider, :null => false, :default => "email"
-      t.string :uid, :null => false, :default => ""
-      t.boolean  :allow_password_change, :default => false
-      ## Tokens
-      t.json :tokens
-    end
+class AddDeviseTokenAuthToUsers < ActiveRecord::Migration[7.0]
+  def up
+    add_column :users, :provider, :string, :null => false, :default => "email"
+    add_column :users, :uid, :string, :null => false, :default => ""
+    add_column :users, :tokens, :text
+  end
 
-    add_index :users, [:uid, :provider],     unique: true
+  def down
+    remove_column :users, :provider
+    remove_column :users, :uid
+    remove_column :users, :tokens
   end
 end

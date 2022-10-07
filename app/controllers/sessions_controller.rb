@@ -29,6 +29,8 @@ class SessionsController < DeviseTokenAuth::SessionsController
       client: @token.client,
       uid: @resource.uid
     }
-    render json: @resource.as_json(only: %i[email id]).merge!({ token: })
+    render json: @resource.as_json(only: %i[id
+                                            email]).merge!({ token:,
+                                                             role_name: @resource.role_name })
   end
 end

@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[my_properties show]
+  before_action :authenticate_user!, only: %i[my_properties show profile]
 
   def my_properties
     return render status: :unprocessable_entity unless current_user.role_name == "Landlord"
@@ -18,8 +18,12 @@ class UsersController < ApplicationController
     end
   end
 
-  def show
+  def profile
     render json: current_user
+  end
+
+  def show
+    render json: User.find(params[:id])
   end
 
   private

@@ -20,4 +20,8 @@ class User < ApplicationRecord
   validates :phone, presence: true, uniqueness: true
 
   # validates :password, presence: true
+
+  def role_name
+    role.name
+  end
 end

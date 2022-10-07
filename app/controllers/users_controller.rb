@@ -6,4 +6,21 @@ class UsersController < ApplicationController
     @my_properties = Own.where(user: current_user)
     render json: @my_properties
   end
+
+  def new
+    puts role = Role.find_by(name:user_params[:role] )
+    @user = User.new(user_params.except("role").merge!({role: role}))
+
+    if @user.save
+      render json: @user, status: :created # 201
+    else
+      render json: { errors: @user.errors }, status: :unprocessable_entity
+    end
+  end
+
+  private
+
+  def user_params
+    params.permit(:email, :password, :phone, :name,:role)
+  end
 end

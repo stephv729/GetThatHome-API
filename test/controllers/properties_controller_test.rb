@@ -2,7 +2,7 @@
 
 require "test_helper"
 
-class AdressTest < ActiveSupport::TestCase
+class PropertiesControllerTest < ActionDispatch::IntegrationTest
   # test "the truth" do
   #   assert true
   # end

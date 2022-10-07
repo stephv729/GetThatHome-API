@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
+ActiveRecord::Schema[7.0].define(version: 2022_10_06_000536) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -21,7 +21,6 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
     t.decimal "longitude", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["latitude", "longitude"], name: "index_addresses_on_latitude_and_longitude", unique: true
   end
 
   create_table "owns", force: :cascade do |t|
@@ -37,10 +36,10 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
   create_table "properties", force: :cascade do |t|
     t.bigint "address_id", null: false
     t.bigint "property_type_id", null: false
-    t.integer "bedrooms"
-    t.integer "bathrooms"
+    t.integer "bedrooms", default: 0
+    t.integer "bathrooms", default: 0
     t.integer "area"
-    t.text "description"
+    t.text "description", null: false
     t.text "photo_urls", default: [], array: true
     t.boolean "active", default: true
     t.datetime "created_at", null: false
@@ -61,7 +60,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
 
   create_table "property_for_sales", force: :cascade do |t|
     t.bigint "property_id", null: false
-    t.integer "price"
+    t.integer "price", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_property_for_sales_on_property_id"
@@ -71,19 +70,21 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_property_types_on_name", unique: true
   end
 
   create_table "roles", force: :cascade do |t|
     t.string "name"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["name"], name: "index_roles_on_name", unique: true
   end
 
   create_table "saved_properties", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "property_id", null: false
-    t.boolean "favorite"
-    t.boolean "contacted"
+    t.boolean "favorite", default: false
+    t.boolean "contacted", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["property_id"], name: "index_saved_properties_on_property_id"
@@ -92,12 +93,22 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_04_210243) do
 
   create_table "users", force: :cascade do |t|
     t.string "name", null: false
-    t.string "email"
     t.string "phone"
     t.string "password"
     t.bigint "role_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "email", default: "", null: false
+    t.string "encrypted_password", default: "", null: false
+    t.string "reset_password_token"
+    t.datetime "reset_password_sent_at"
+    t.datetime "remember_created_at"
+    t.string "provider", default: "email", null: false
+    t.string "uid", default: "", null: false
+    t.text "tokens"
+    t.index ["email"], name: "index_users_on_email", unique: true
+    t.index ["phone"], name: "index_users_on_phone", unique: true
+    t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
     t.index ["role_id"], name: "index_users_on_role_id"
   end
 

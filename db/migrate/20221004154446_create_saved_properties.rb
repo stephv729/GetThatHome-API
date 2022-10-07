@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class CreateSavedProperties < ActiveRecord::Migration[7.0]
   def change
     create_table :saved_properties do |t|

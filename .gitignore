@@ -30,5 +30,3 @@
 
 # Ignore settings in vscode
 .vscode/settings.json
-app/controllers/addresses_controller.rb
-test/controllers/addresses_controller_test.rb

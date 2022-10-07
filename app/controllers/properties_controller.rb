@@ -34,17 +34,23 @@ class PropertiesController < ApplicationController
     return render status: :unauthorized unless current_user.role_name == "Landlord"
 
     address = Address.find(@property.address.id)
-    address.update(modify_params(params[:address],["name"]))
+    address.update(modify_params(params[:address],["name"])) if params[:address].present?
     photos = params[:photo_urls]
     op_type = params[:operation_type]
     other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active", "property_type_id"]
     other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
 
-    body = other_data.merge!({ photo_urls: photos })
-
-    is_same_op_type = @property.operation_type[:type] == op_type[:type]
-    change_op_type = is_same_op_type ? change_operation_data(op_type) : change_operation_type(op_type)
-
+    body = photos.present? ? (other_data.merge!({ photo_urls: photos })) : other_data
+    puts "--------"
+    puts body
+    puts "--------"
+    if op_type.present?
+     is_same_op_type = @property.operation_type[:type] == op_type[:type]
+     change_op_type = is_same_op_type ? change_operation_data(op_type) : change_operation_type(op_type)
+    else
+      puts"********hola****"
+      change_op_type = true
+    end
     if @property.update(body) && change_op_type
       render json: @property
     else
@@ -52,7 +58,20 @@ class PropertiesController < ApplicationController
     end
   end
 
-  def destroy; end
+  def destroy
+    @my_properties = Own.where(user: current_user)
+    prop = PropertyForRent.where(property: @property).first 
+    prop2 = PropertyForSale.where(property: @property).first
+   
+    if prop.present?
+      access = @my_properties.find_by(ownable_type: "PropertyForRent", ownable_id: prop.id ).present?
+    elsif prop2.present? 
+      access = @my_properties.find_by(ownable_type: "PropertyForSale", ownable_id: prop2.id ).present?
+    end
+   
+    return render status: :unauthorized unless access
+    @property.destroy
+  end
 
   # Use callbacks to share common setup or constraints between actions.
   private

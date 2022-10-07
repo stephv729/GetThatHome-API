@@ -4,6 +4,8 @@ class Property < ApplicationRecord
   belongs_to :property_type
   belongs_to :address
   has_many :saved_properties, dependent: :destroy
+  has_one :property_for_sale, dependent: :destroy
+  has_one :property_for_rent, dependent: :destroy
 
   # validations
   validates :area, :active, :description, presence: true

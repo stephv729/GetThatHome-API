@@ -5,9 +5,9 @@ Rails.application.routes.draw do
   }
   # devise_for :users
 
-  resources :properties, only: %i[index show create update]
+  resources :properties, only: %i[index show create update destroy]
   resources :property_types, only: %i[index]
-  resources :saved_properties, only: %i[index]
+  resources :saved_properties, only: %i[index update]
   
   get 'my_properties', :to => 'users#my_properties'
   get 'profile', :to => 'users#show'

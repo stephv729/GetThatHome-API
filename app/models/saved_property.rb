@@ -9,6 +9,6 @@ class SavedProperty < ApplicationRecord
   private
 
   def clean
-    SavedProperty.destroy(self) unless favorite || contacted
+    self.destroy unless favorite || contacted
   end
 end

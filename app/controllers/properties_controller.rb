@@ -9,7 +9,20 @@ class PropertiesController < ApplicationController
   end
 
   def create
-    if current_user.role.name != ""
+    return render status: :unauthorized unless current_user.role_name == "Landlord"
+    address = Address.create(modify_params(params[:address],["name"]))
+    photos = params[:photo_urls]
+    op_type = params[:operation_type]
+    other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active", "property_type_id"]
+    other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
+    body = other_data.merge!({ photo_urls: photos, address: address })
+
+    @property = Property.new(body)
+    if @property.save && change_operation_type(op_type)
+      render json: @property
+    else
+      render json: @property.errors, status: :unprocessable_entity
+    end
   end
 
   # GET /properties/1
@@ -18,29 +31,21 @@ class PropertiesController < ApplicationController
   end
 
   def update
-    name = property_params[:address_name]
-    lat = property_params[:address_lat].to_f
-    lng = property_params[:address_lng].to_f
-    address = Address.find(@property.address.id)
-    address.update(name:name, latitude:lat, longitude: lng)
-    p op_type = params[:operation_type]
-    p_type = property_params[:property_type_id]
-    other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active"]
-    other_data = property_params.select {|k,v| other_data_keys.include?(k) }
-    photos = params[:photo_urls]
-    body = other_data.merge!({property_type_id: p_type, photo_urls: photos})
+    return render status: :unauthorized unless current_user.role_name == "Landlord"
 
-    if PropertyForRent.find_by(property: @property)
-      puts "here:*****"
-      PropertyForRent.delete_by(property: @property.id) unless op_type[:type ]== "for rent"
-      PropertyForSale.create(property: @property, price: op_type[:price]) unless op_type[:type] == "for rent"
-    elsif PropertyForSale.find_by(property: @property)
-      puts "here:------"
-      PropertyForSale.delete_by(property: @property.id) unless op_type[:type] == "for sale"
-      PropertyForRent.create(property: @property, maintenance: op_type[:maintenance], monthly_rent: op_type[:monthly_rent], pets_allowed: op_type[:pets_allowed]) unless op_type[:type] == "for sale"
-    end
-   
-    if @property.update(body)
+    address = Address.find(@property.address.id)
+    address.update(modify_params(params[:address],["name"]))
+    photos = params[:photo_urls]
+    op_type = params[:operation_type]
+    other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active", "property_type_id"]
+    other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
+
+    body = other_data.merge!({ photo_urls: photos })
+
+    is_same_op_type = @property.operation_type[:type] == op_type[:type]
+    change_op_type = is_same_op_type ? change_operation_data(op_type) : change_operation_type(op_type)
+
+    if @property.update(body) && change_op_type
       render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -50,11 +55,57 @@ class PropertiesController < ApplicationController
   def destroy; end
 
   # Use callbacks to share common setup or constraints between actions.
+  private
+
   def set_property
     Rails.logger.debug @property = Property.find(params[:id])
   end
 
   def property_params
-    params.permit(:bedrooms, :bathrooms, :area, :description, :active, :property_type_id, :address_name, :address_lat, :address_lng, :photo_urls, :operation_type)
+    params.permit(:bedrooms, :bathrooms, :area, :description, :active, :property_type_id, :address,
+                  :photo_urls, :operation_type)
+  end
+
+  def modify_params(hash, exceptions)
+    keys = hash.keys
+    new_hash = {}
+    keys.each { |k| new_hash[k] = hash[k] }
+    new_hash.map { |k, v| { k => exceptions.include?(k) ? v : v.to_f } }.reduce(:merge)
+  end
+
+  def change_operation_type(op_type)
+    data = op_type.except("type").merge!({ property_id: @property.id })
+    modified_data = modify_params(data,data.keys)
+
+    case op_type[:type]
+    when "for rent"
+      model = PropertyForRent
+      other_model = PropertyForSale
+    when "for sale"
+      model = PropertyForSale
+      other_model = PropertyForRent
+    end
+   
+    attrs = model.attribute_names
+    modified_data.keys.all?{|k| attrs.include?(k)}
+    return false unless modified_data.keys.all?{|k| attrs.include?(k)}
+    new_prop = model.create(modified_data)
+    other_model.delete_by(property: @property) if new_prop.persisted?
+    new_prop.persisted?
+  end
+
+  def change_operation_data(op_type)
+    data = op_type.except("type")
+    modified_data = modify_params(data,data.keys)
+    case op_type[:type]
+    when "for rent"
+      model = PropertyForRent
+    when "for sale"
+      model = PropertyForSale
+    end
+    prop = model.find_by(property: @property)
+    attrs = model.attribute_names
+    return false unless modified_data.keys.all?{|k| attrs.include?(k)}
+    prop.update(modified_data) 
   end
 end

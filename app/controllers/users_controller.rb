@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[my_properties]
+  before_action :authenticate_user!, only: %i[my_properties show]
 
   def my_properties
     return render status: :unprocessable_entity unless current_user.role_name == "Landlord"
@@ -16,6 +16,10 @@ class UsersController < ApplicationController
     else
       render json: { errors: @user.errors }, status: :unprocessable_entity
     end
+  end
+
+  def show
+    render json: current_user
   end
 
   private

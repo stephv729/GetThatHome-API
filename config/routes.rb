@@ -8,7 +8,9 @@ Rails.application.routes.draw do
   resources :properties, only: %i[index show create update]
   resources :property_types, only: %i[index]
   resources :saved_properties, only: %i[index]
+  
   get 'my_properties', :to => 'users#my_properties'
+  get 'profile', :to => 'users#show'
   #get “/my_properties”, to: “users#my_properties”
   # resources :sessions, only: %i[create destroy
 end

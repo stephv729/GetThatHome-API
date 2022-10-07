@@ -91,6 +91,7 @@ class PropertiesController < ApplicationController
     return false unless modified_data.keys.all?{|k| attrs.include?(k)}
     new_prop = model.create(modified_data)
     other_model.delete_by(property: @property) if new_prop.persisted?
+    Own.create(user: current_user, ownable: new_prop) if new_prop.persisted?
     new_prop.persisted?
   end
 

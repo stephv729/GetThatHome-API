@@ -10,7 +10,7 @@ class CreateProperties < ActiveRecord::Migration[7.0]
       t.integer :area
       t.text :description, null: false
       t.text :photo_urls, array: true, default: []
-      t.boolean :active, default: true
+      t.boolean :active, default: true, null:false
 
       t.timestamps
     end

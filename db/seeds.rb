@@ -77,9 +77,11 @@ puts 'end creating properties for sale or rent'
 
 puts 'start creating saved properties'
 favorite1 = SavedProperty.create(property: prop1, user: user1, favorite: true)
+favorite1copy = SavedProperty.create(property: prop1, user: user1, favorite: true)
 contacted1 = SavedProperty.create(property: prop2, user: user1, contacted: true)
 
 puts favorite1.persisted?
+puts favorite1copy.persisted? ? 'true' : favorite1copy.errors.full_messages
 puts contacted1.persisted?
 puts 'end creating saved properties'
 

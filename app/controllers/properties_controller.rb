@@ -41,9 +41,6 @@ class PropertiesController < ApplicationController
     other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
 
     body = photos.present? ? (other_data.merge!({ photo_urls: photos })) : other_data
-    puts "--------"
-    puts body
-    puts "--------"
     if op_type.present?
      is_same_op_type = @property.operation_type[:type] == op_type[:type]
      change_op_type = is_same_op_type ? change_operation_data(op_type) : change_operation_type(op_type)

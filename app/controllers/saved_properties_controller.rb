@@ -6,6 +6,17 @@ class SavedPropertiesController < ApplicationController
     render json: @saved_properties
   end
 
+  def create
+    return render status: :unprocessable_entity unless current_user.role_name == "Homeseeker"
+    property = Property.where(id:params[:property_id] ).first
+    @saved_property = SavedProperty.new(property: property, user: current_user)
+    if @saved_property.update(saved_properties_params)
+      render json: @saved_property, status: :ok
+    else
+      render json: @saved_property.errors, status: :unprocessable_entity
+    end
+  end
+
   def update
     return render status: :unprocessable_entity unless current_user.role_name == "Homeseeker"
     @saved_property = SavedProperty.find_by(user: current_user,id: params[:id]) 

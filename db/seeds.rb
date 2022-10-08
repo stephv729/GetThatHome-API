@@ -43,8 +43,8 @@ puts type2.persisted?
 puts 'end creating property types'
 
 puts 'start creating addresses'
-address1 = Address.create(latitude: 45.4, longitude: -34.2, name: 'direccion 1')
-address2 = Address.create(latitude: 45.4, longitude: 160, name: 'direccion 2')
+address1 = Address.create(latitude: -12.73, longitude: -77.07, name: 'direccion 1')
+address2 = Address.create(latitude: -12.65, longitude: -77.001, name: 'direccion 2')
 
 puts address1.persisted?
 puts address2.persisted?

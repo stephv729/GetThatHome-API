@@ -30,3 +30,4 @@
 
 # Ignore settings in vscode
 .vscode/settings.json
+.env

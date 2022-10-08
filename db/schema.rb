@@ -41,7 +41,7 @@ ActiveRecord::Schema[7.0].define(version: 2022_10_06_000536) do
     t.integer "area"
     t.text "description", null: false
     t.text "photo_urls", default: [], array: true
-    t.boolean "active", default: true
+    t.boolean "active", default: true, null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["address_id"], name: "index_properties_on_address_id"

@@ -7,7 +7,7 @@ class UsersController < ApplicationController
     render json: @my_properties
   end
 
-  def new
+  def create
     puts role = Role.find_by(name:user_params[:role] )
     @user = User.new(user_params.except("role").merge!({role: role}))
 

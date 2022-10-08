@@ -35,7 +35,7 @@ puts user2.persisted?
 puts 'end creating users'
 
 puts 'start creating property types'
-type1 = PropertyType.create(name: 'Aparment')
+type1 = PropertyType.create(name: 'Apartment')
 type2 = PropertyType.create(name: 'House')
 
 puts type1.persisted?

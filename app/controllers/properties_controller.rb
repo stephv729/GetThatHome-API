@@ -17,8 +17,9 @@ class PropertiesController < ApplicationController
     other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
     body = other_data.merge!({ photo_urls: photos, address: address })
 
+    return render json: {error: "Incorrect data"} unless change_operation_type(op_type)
     @property = Property.new(body)
-    if change_operation_type(op_type) &&  @property.save  
+    if @property.save  
         render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -47,7 +48,8 @@ class PropertiesController < ApplicationController
     else
       change_op_type = true
     end
-    if @property.update(body) && change_op_type
+    return render json: {error: "Incorrect data"} unless change_op_type
+    if @property.update(body)
       render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity

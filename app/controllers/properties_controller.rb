@@ -106,9 +106,6 @@ class PropertiesController < ApplicationController
     end
    
     attrs = model&.attribute_names
-    puts "++++++here+++++"
-    puts modified_data.keys.all?{|k| attrs.include?(k)}
-    puts "++++++here+++++"
     return false unless modified_data.keys.all?{|k| attrs&.include?(k)}
     new_prop = model.create(modified_data)
     other_model.destroy_by(property: @property) if new_prop.persisted?

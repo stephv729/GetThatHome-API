@@ -10,7 +10,8 @@ class PropertiesController < ApplicationController
 
   def create
     return render status: :unauthorized unless current_user.role_name == "Landlord"
-    address = Address.create(modify_params(params[:address],["name"]))
+    address = Address.new(modify_params(params[:address],["name"]))
+    return render json: {address: ["Incorrect data"]}, status: :unprocessable_entity unless address.save
     photos = params[:photo_urls]
     op_type = params[:operation_type]
     other_data_keys = ["bedrooms", "bathrooms", "area", "description", "active", "property_type_id"]
@@ -18,8 +19,11 @@ class PropertiesController < ApplicationController
     body = other_data.merge!({ photo_urls: photos, address: address })
 
     @property = Property.new(body)
-    return render json: {error: "Incorrect data"} unless change_operation_type(op_type)
     if @property.save  
+      unless change_operation_type(op_type)
+        @property.destroy
+        return render json: {operation_type: ["Incorrect data"]}, status: :unprocessable_entity 
+      end
         render json: @property
     else
       render json: @property.errors, status: :unprocessable_entity
@@ -48,7 +52,7 @@ class PropertiesController < ApplicationController
     else
       change_op_type = true
     end
-    return render json: {error: "Incorrect data"} unless change_op_type
+    return render json: {operation_type: ["Incorrect data"]} unless change_op_type
     if @property.update(body)
       render json: @property
     else
@@ -105,9 +109,11 @@ class PropertiesController < ApplicationController
       return false
     end
    
-    attrs = model&.attribute_names
+    p attrs = model&.attribute_names
+    p modified_data
     return false unless modified_data.keys.all?{|k| attrs&.include?(k)}
-    new_prop = model.create(modified_data)
+    p new_prop = model.new(modified_data)
+    new_prop.save
     other_model.destroy_by(property: @property) if new_prop.persisted?
     Own.create(user: current_user, ownable: new_prop) if new_prop.persisted?
     new_prop.persisted?

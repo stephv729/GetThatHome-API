@@ -17,8 +17,8 @@ class PropertiesController < ApplicationController
     other_data = property_params.select { |k, _v| other_data_keys.include?(k) }
     body = other_data.merge!({ photo_urls: photos, address: address })
 
-    return render json: {error: "Incorrect data"} unless change_operation_type(op_type)
     @property = Property.new(body)
+    return render json: {error: "Incorrect data"} unless change_operation_type(op_type)
     if @property.save  
         render json: @property
     else

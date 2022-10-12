@@ -4,7 +4,7 @@ class PropertiesController < ApplicationController
   before_action :set_property, only: %i[show update destroy]
   before_action :authenticate_user!, only: %i[create update destroy]
   def index
-    @properties = Property.all # array
+    @properties = Property.where(active: true) # array
     render json: @properties
   end
 
@@ -22,6 +22,7 @@ class PropertiesController < ApplicationController
     if @property.save  
       unless change_operation_type(op_type)
         @property.destroy
+        address.destroy
         return render json: {operation_type: ["Incorrect data"]}, status: :unprocessable_entity 
       end
         render json: @property
@@ -109,10 +110,10 @@ class PropertiesController < ApplicationController
       return false
     end
    
-    p attrs = model&.attribute_names
-    p modified_data
+    attrs = model&.attribute_names
+    modified_data
     return false unless modified_data.keys.all?{|k| attrs&.include?(k)}
-    p new_prop = model.new(modified_data)
+    new_prop = model.new(modified_data)
     new_prop.save
     other_model.destroy_by(property: @property) if new_prop.persisted?
     Own.create(user: current_user, ownable: new_prop) if new_prop.persisted?

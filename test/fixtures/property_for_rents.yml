@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  property: one
+  monthly_rent: 1
+  maintenance: 1
+  pets_allowed: false
+
+two:
+  property: two
+  monthly_rent: 1
+  maintenance: 1
+  pets_allowed: false

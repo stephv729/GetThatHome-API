@@ -1,0 +1,13 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  user: one
+  property: one
+  favorite: false
+  contacted: false
+
+two:
+  user: two
+  property: two
+  favorite: false
+  contacted: false

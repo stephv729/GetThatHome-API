@@ -4,7 +4,11 @@ class RegistrationsController < DeviseTokenAuth::RegistrationsController
     role = Role.find_by(name:user_params[:role] )
     user_params.except("role").merge!({role: role})
   end
-  
+
+  def account_update_params
+    params.permit(:phone, :name)
+  end
+
   def render_create_success
     token = {
       "access-token": @token.token,
@@ -15,5 +19,9 @@ class RegistrationsController < DeviseTokenAuth::RegistrationsController
     render json: @resource.as_json(only: %i[id
                                             email]).merge!({ token:,
                                                              role_name: @resource.role_name })
+  end
+
+  def render_update_success
+    render json: @resource.as_json(only: %i[name phone email id])
   end
 end

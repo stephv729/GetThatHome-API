@@ -1,6 +1,7 @@
 Rails.application.routes.draw do
   mount_devise_token_auth_for "User", at: "auth", controllers: {
     sessions: "sessions",
+    registrations: "registrations"
   }
   # devise_for :users
 
@@ -11,7 +12,7 @@ Rails.application.routes.draw do
   
   get 'my_properties', :to => 'users#my_properties'
   get 'profile', :to => 'users#profile'
-  post 'auth/sign_up', :to => 'users#create'
+  # post 'auth/sign_up', :to => 'users#create'
   #get “/my_properties”, to: “users#my_properties”
   # resources :sessions, only: %i[create destroy
 end

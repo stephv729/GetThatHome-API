@@ -101,7 +101,7 @@ types = PropertyType.all.to_a
     area: rand(8..30) * 10,
     bedrooms: rand(1...10),
     bathrooms: rand(1...5),
-    photo_urls: urls.sample(rand(1...urls.length))
+    photo_urls: urls.sample(rand(2...urls.length))
   )
   unless property.persisted?
     puts property.errors.full_messages

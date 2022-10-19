@@ -9,6 +9,7 @@ Property.destroy_all
 User.destroy_all
 Role.destroy_all
 PropertyType.destroy_all
+Address.destroy_all
 puts "end destroying data ..."
 
 # Roles

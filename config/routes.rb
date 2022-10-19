@@ -4,7 +4,7 @@ Rails.application.routes.draw do
     registrations: "registrations"
   }
   # devise_for :users
-
+  root :to => "main#index"
   resources :properties, only: %i[index show create update destroy]
   resources :property_types, only: %i[index]
   resources :saved_properties, only: %i[index update create]

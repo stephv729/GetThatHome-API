@@ -95,6 +95,8 @@ types = PropertyType.all.to_a
     property_type: types.sample,
     description: Faker::Lorem.paragraph_by_chars(number: 150, supplemental: false),
     area: rand(500..2000),
+    bedrooms: rand(1...10),
+    bathrooms: rand(1...5),
     photo_urls: urls.sample(rand(1...urls.length))
   )
   unless property.persisted?

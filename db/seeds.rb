@@ -34,10 +34,12 @@ puts "end creating roles"
 # Users
 puts "start creating users"
 roles = Role.all.to_a
+index = 1
+
 5.times do
   user = User.create(
-    name: Faker::Name.name,
-    email: Faker::Internet.unique.safe_email,
+    name: "Test#{index}",
+    email: "test#{index}@mail.com",
     role: roles.sample,
     password: "123456",
     phone: Faker::PhoneNumber.unique.cell_phone_in_e164
@@ -46,6 +48,7 @@ roles = Role.all.to_a
     puts user.errors.full_messages
     puts user
   end
+  index += 1
 end
 puts "end creating users"
 
@@ -95,7 +98,7 @@ types = PropertyType.all.to_a
     address: addresses.sample,
     property_type: types.sample,
     description: Faker::Lorem.paragraph_by_chars(number: 150, supplemental: false),
-    area: rand(8..30)*10,
+    area: rand(8..30) * 10,
     bedrooms: rand(1...10),
     bathrooms: rand(1...5),
     photo_urls: urls.sample(rand(1...urls.length))
@@ -137,10 +140,10 @@ sale_group.each do |property|
     puts sale
   end
 end
-Rails.logger.debug "end creating properties for sale or rent"
+puts "end creating properties for sale or rent"
 
 # Saved Properties
-Rails.logger.debug "start creating saved properties"
+puts "start creating saved properties"
 
 properties_to_save = properties.sample(rand(1...properties.length))
 homeseekers = User.where(role: Role.find_by(name: "Homeseeker"))

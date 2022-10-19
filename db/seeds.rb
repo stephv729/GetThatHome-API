@@ -1,6 +1,6 @@
 require "faker"
 
-Rails.logger.debug "start destroying data ..."
+puts "start destroying data ..."
 Own.destroy_all
 SavedProperty.destroy_all
 PropertyForSale.destroy_all
@@ -9,10 +9,10 @@ Property.destroy_all
 User.destroy_all
 Role.destroy_all
 PropertyType.destroy_all
-Rails.logger.debug "end destroying data ..."
+puts "end destroying data ..."
 
 # Roles
-Rails.logger.debug "start creating roles"
+puts "start creating roles"
 roles = [
   {
     name: "Homeseeker"
@@ -24,14 +24,14 @@ roles = [
 roles.each do |role_data|
   role = Role.create(role_data)
   unless role.persisted?
-    Rails.logger.debug role.errors.full_messages
-    Rails.logger.debug role
+    puts role.errors.full_messages
+    puts role
   end
 end
-Rails.logger.debug "end creating roles"
+puts "end creating roles"
 
 # Users
-Rails.logger.debug "start creating users"
+puts "start creating users"
 roles = Role.all.to_a
 5.times do
   user = User.create(
@@ -42,14 +42,14 @@ roles = Role.all.to_a
     phone: Faker::PhoneNumber.unique.cell_phone_in_e164
   )
   unless user.persisted?
-    Rails.logger.debug user.errors.full_messages
-    Rails.logger.debug user
+    puts user.errors.full_messages
+    puts user
   end
 end
-Rails.logger.debug "end creating users"
+puts "end creating users"
 
 # Property Types
-Rails.logger.debug "start creating property types"
+puts "start creating property types"
 types = [
   {
     name: "Apartment"
@@ -61,14 +61,14 @@ types = [
 types.each do |type_data|
   type = PropertyType.create(type_data)
   unless type.persisted?
-    Rails.logger.debug type.errors.full_messages
-    Rails.logger.debug type
+    puts type.errors.full_messages
+    puts type
   end
 end
-Rails.logger.debug "end creating property types"
+puts "end creating property types"
 
 # Addresses
-Rails.logger.debug "start creating addresses"
+puts "start creating addresses"
 20.times do
   address = Address.create(
     latitude: Faker::Address.latitude,
@@ -76,14 +76,14 @@ Rails.logger.debug "start creating addresses"
     name: Faker::Address.community
   )
   unless address.persisted?
-    Rails.logger.debug address.errors.full_messages
-    Rails.logger.debug address
+    puts address.errors.full_messages
+    puts address
   end
 end
-Rails.logger.debug "end creating addresses"
+puts "end creating addresses"
 
 # Properties
-Rails.logger.debug "start creating properties"
+puts "start creating properties"
 urls = ["https://images.freeimages.com/images/large-previews/e85/house-1224030.jpg",
         "https://media.istockphoto.com/photos/new-housing-estate-with-underground-garage-picture-id1287012612?s=612x612", "https://images.freeimages.com/images/large-previews/d5b/home-1224274.jpg", "https://images.freeimages.com/images/large-previews/4b4/beach-house-1225387.jpg"]
 
@@ -98,14 +98,14 @@ types = PropertyType.all.to_a
     photo_urls: urls.sample(rand(1...urls.length))
   )
   unless property.persisted?
-    Rails.logger.debug property.errors.full_messages
-    Rails.logger.debug property
+    puts property.errors.full_messages
+    puts property
   end
 end
-Rails.logger.debug "end creating properties"
+puts "end creating properties"
 
 # Properties For Rent or Sale
-Rails.logger.debug "start creating properties for sale or rent"
+puts "start creating properties for sale or rent"
 properties = Property.all.to_a
 rent_group_length = rand(1...properties.length)
 rent_group = properties.sample(rent_group_length)
@@ -119,8 +119,8 @@ rent_group.each do |property|
     pets_allowed: [true, false].sample
   )
   unless rent.persisted?
-    Rails.logger.debug rent.errors.full_messages
-    Rails.logger.debug rent
+    puts rent.errors.full_messages
+    puts rent
   end
 end
 
@@ -130,8 +130,8 @@ sale_group.each do |property|
     price: rand(8...30) * 100
   )
   unless sale.persisted?
-    Rails.logger.debug sale.errors.full_messages
-    Rails.logger.debug sale
+    puts sale.errors.full_messages
+    puts sale
   end
 end
 Rails.logger.debug "end creating properties for sale or rent"
@@ -151,14 +151,14 @@ properties_to_save.each do |property|
   )
 
   unless saved_property.persisted?
-    Rails.logger.debug saved_property.errors.full_messages
-    Rails.logger.debug saved_property
+    puts saved_property.errors.full_messages
+    puts saved_property
   end
 end
-Rails.logger.debug "end creating saved properties"
+puts "end creating saved properties"
 
 # Ownable properties
-Rails.logger.debug "start creating own"
+puts "start creating own"
 landlords = User.where(role: Role.find_by(name: "Landlord")).to_a
 properties_to_own = PropertyForSale.all.to_a + PropertyForRent.all.to_a
 
@@ -169,8 +169,8 @@ properties_to_own.each do |property|
   )
 
   unless ownable_property.persisted?
-    Rails.logger.debug ownable_property.errors.full_messages
-    Rails.logger.debug ownable_property
+    puts ownable_property.errors.full_messages
+    puts ownable_property
   end
 end
-Rails.logger.debug "end creating own"
+puts "end creating own"

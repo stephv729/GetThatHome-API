@@ -1,0 +1,34 @@
+[
+  {
+    "name": "Tokyo, Japan",
+    "latitude": 35.6839	,
+    "longitude":139.7744
+  },
+  {
+    "name": "New York, US",
+    "latitude": 40.6943	,
+    "longitude":-73.9249
+  },
+  {
+    "name": "Mexico City, Mexico",
+    "latitude": 19.4333,
+    "longitude":-99.1333
+  },
+  {
+    "name": "Mumbai, India",
+    "latitude": 18.9667,
+    "longitude":72.8333
+  },
+  {
+    "name": "Sao Paulo, Brasil",
+    "latitude":	-23.5504,
+    "longitude":-46.6339
+  },
+  {
+    "name": "Lima, Peru",
+    "latitude": -12.04318,
+    "longitude": -77.02824
+  }
+]
+
+

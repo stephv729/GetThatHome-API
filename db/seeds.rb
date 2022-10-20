@@ -73,12 +73,9 @@ puts "end creating property types"
 
 # Addresses
 puts "start creating addresses"
-20.times do
-  address = Address.create(
-    latitude: Faker::Address.latitude,
-    longitude: Faker::Address.longitude,
-    name: Faker::Address.community
-  )
+addresses_data = JSON.parse(File.read("db/addresses.json"), symbolize_names: true)
+addresses_data.each do |address_data|
+  address = Address.create(address_data)
   unless address.persisted?
     puts address.errors.full_messages
     puts address

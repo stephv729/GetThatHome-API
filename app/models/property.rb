@@ -27,9 +27,9 @@ class Property < ApplicationRecord
     for_sale = PropertyForSale.find_by(property_id: id)
     for_rent = PropertyForRent.find_by(property_id: id)
     if for_sale.present?
-      Own.find_by(ownable:for_sale).id
+      Own.find_by(ownable:for_sale).user_id
     elsif for_rent.present?
-      Own.find_by(ownable:for_rent).id
+      Own.find_by(ownable:for_rent).user_id
     end
   end
 end

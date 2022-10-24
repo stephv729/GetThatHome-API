@@ -1,5 +1,5 @@
 class UsersController < ApplicationController
-  before_action :authenticate_user!, only: %i[my_properties show profile]
+  before_action :authenticate_user!, only: %i[my_properties profile]
 
   def my_properties
     errors = {errors: "Must be Landlord"}

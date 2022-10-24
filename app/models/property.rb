@@ -22,4 +22,14 @@ class Property < ApplicationRecord
         pets_allowed: for_rent.pets_allowed }
     end
   end
+
+  def owner_id
+    for_sale = PropertyForSale.find_by(property_id: id)
+    for_rent = PropertyForRent.find_by(property_id: id)
+    if for_sale.present?
+      Own.find_by(ownable:for_sale).id
+    elsif for_rent.present?
+      Own.find_by(ownable:for_rent).id
+    end
+  end
 end

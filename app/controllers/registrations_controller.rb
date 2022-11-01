@@ -17,7 +17,7 @@ class RegistrationsController < DeviseTokenAuth::RegistrationsController
       uid: @resource.uid
     }
     render json: @resource.as_json(only: %i[id
-                                            email]).merge!({ token:,
+                                            email name phone]).merge!({ token:,
                                                              role_name: @resource.role_name })
   end
 

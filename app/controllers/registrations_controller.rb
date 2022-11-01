@@ -22,6 +22,6 @@ class RegistrationsController < DeviseTokenAuth::RegistrationsController
   end
 
   def render_update_success
-    render json: @resource.as_json(only: %i[name phone email id])
+    render json: @resource.as_json(only: %i[name phone email id]).merge!({ role_name: @resource.role_name })
   end
 end
